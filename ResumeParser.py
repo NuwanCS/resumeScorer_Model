@@ -4,15 +4,20 @@ from datetime import datetime
 from dateutil import parser
 import re
 from string import punctuation
+from scoreResume import Scorer
 
 class ResumeParser:
     def __init__(self, ner, ner_dates, zero_shot_classifier, tagger):
         self.models = Models()
+        self.scorer = Scorer()
         self.segmenter = ResumeSegmenter(zero_shot_classifier)
         self.ner, self.ner_dates, self.zero_shot_classifier, self.tagger = ner, ner_dates, zero_shot_classifier, tagger 
         self.parsed_cv = {}
 
-    def parse(self, resume_lines):
+    def parse(self, resume_lines, job_description):
+        print("*****************************WOrking...***************************** ")
+        score = self.scorer.sent_similarity(resume_lines, job_description)
+        print("******score*******", score)
         resume_segments = self.segmenter.segment(resume_lines)
         print("***************************** Parsing the Resume...***************************** ")
         for segment_name in resume_segments:
@@ -29,7 +34,7 @@ class ResumeParser:
                 skills_header = resume_segments[segment_name]
                 self.parse_skills(skills_header)
                 print("************************************** SKILLS HEADER ***************************** <br>",skills_header)
-        return self.parsed_cv
+        return self.parsed_cv, score 
 
     def parse_education(self, education_and_training):
         print(education_and_training)

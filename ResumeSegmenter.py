@@ -142,7 +142,6 @@ class ResumeSegmenter:
                     end_idx = resume_indices[resume_indices.index(start_idx) + 1]
                 
                 sec_idxs[section] = (start_idx, end_idx)
-                # print(start_idx, end_idx)
 
                 resume_segments[section][sub_section] = string_to_search[start_idx:end_idx]
         return sec_idxs
@@ -169,7 +168,6 @@ class ResumeSegmenter:
         else: return 0 
 
     def segment(self, string_to_search):
-        print("Segmenting the Resume..")
         resume_segments = {
             'objective': {},
             'work_and_employment': {},
