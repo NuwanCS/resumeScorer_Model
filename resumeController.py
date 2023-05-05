@@ -1,8 +1,14 @@
 from flask import Flask, request, jsonify
-from pyresparser import ResumeParser
+from ResumeReader import ResumeReader
+from ResumeParser import ResumeParser
+from Models import Models
 
 app = Flask(__name__)
-parser = ResumeParser()
+
+models = Models()
+ner, ner_dates, zero_shot_classifier, tagger = models.load_trained_models()
+reader = ResumeReader()
+parser = ResumeParser(ner, ner_dates, zero_shot_classifier, tagger) 
 
 @app.route('/py/parse_cv_and_job', methods=['POST'])
 def parse_cv_and_job():
