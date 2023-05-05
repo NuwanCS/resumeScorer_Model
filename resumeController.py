@@ -4,7 +4,7 @@ from pyresparser import ResumeParser
 app = Flask(__name__)
 parser = ResumeParser()
 
-@app.route('/parse_cv_and_job', methods=['POST'])
+@app.route('/py/parse_cv_and_job', methods=['POST'])
 def parse_cv_and_job():
     cv = request.files['cv']
 
@@ -13,6 +13,9 @@ def parse_cv_and_job():
     data = parser.parse(cv, job_desc)
 
     return jsonify(data)
+@app.route('/py/', methods=['GET'])
+def hello():
+    return 'App is running'
 
 if __name__ == '__main__':
     app.run()
